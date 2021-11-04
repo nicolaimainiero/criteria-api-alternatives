@@ -17,11 +17,12 @@ public class QueryDSLExample implements Example {
     }
 
     @Override
-    public Customer findByName(String lastName) {
+    public Customer findByName(String firstName, String lastName) {
         QCustomer customer = QCustomer.customer;
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
-        return jpaQueryFactory.selectFrom(customer).where(customer.lastName.eq(lastName)).fetchOne();
-
+        return jpaQueryFactory.selectFrom(customer)
+                .where(customer.firstName.eq(firstName).and(customer.lastName.eq(lastName)))
+                .fetchOne();
     }
 
     @Override

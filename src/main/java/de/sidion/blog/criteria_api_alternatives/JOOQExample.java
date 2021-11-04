@@ -2,7 +2,9 @@ package de.sidion.blog.criteria_api_alternatives;
 
 import de.sidion.blog.criteria_api_alternatives.model.Customer;
 import de.sidion.blog.criteria_api_alternatives.model.PurchaseOrder;
+import org.jooq.Record;
 import org.jooq.SQLDialect;
+import org.jooq.SelectConditionStep;
 import org.jooq.impl.DSL;
 
 import javax.persistence.EntityManager;
@@ -21,29 +23,23 @@ public class JOOQExample implements Example {
         this.em = em;
     }
 
-    public Customer findByName(String lastName) {
+    public Customer findByName(String firstName, String lastName) {
         SQLDialect configuration = SQLDialect.POSTGRES;
-        Customer customer =
-                nativeQuery(em,
-                        DSL.using(configuration)
-                                .select()
-                                .from(CUSTOMER)
-                                .where(CUSTOMER.LAST_NAME.eq(lastName))
-                        , Customer.class);
-        return customer;
+        SelectConditionStep<Record> query = DSL.using(configuration)
+                .select()
+                .from(CUSTOMER)
+                .where(CUSTOMER.FIRST_NAME.eq(firstName).and(CUSTOMER.LAST_NAME.eq(lastName)));
+        return nativeQuery(em, query, Customer.class);
     }
 
     public PurchaseOrder findOrderOfCustomer(String lastName) {
         SQLDialect configuration = SQLDialect.POSTGRES;
-        PurchaseOrder order =
-                nativeQuery(em,
-                        DSL.using(configuration)
-                                .select()
-                                .from(PURCHASE_ORDER)
-                                .join(CUSTOMER).on(PURCHASE_ORDER.CUSTOMER_ID.eq(CUSTOMER.ID))
-                                .where(CUSTOMER.LAST_NAME.eq(lastName))
-                        , PurchaseOrder.class);
-        return order;
+        SelectConditionStep<Record> query = DSL.using(configuration)
+                .select()
+                .from(PURCHASE_ORDER)
+                .join(CUSTOMER).on(PURCHASE_ORDER.CUSTOMER_ID.eq(CUSTOMER.ID))
+                .where(CUSTOMER.LAST_NAME.eq(lastName));
+        return nativeQuery(em, query, PurchaseOrder.class);
     }
 
     public static <E> E nativeQuery(EntityManager em, org.jooq.Query query, Class<E> type) {

@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 
@@ -20,13 +21,14 @@ public class CriteriaApiExample implements Example {
         this.em = em;
     }
 
-    public Customer findByName(String lastName) {
+    public Customer findByName(String firstName, String lastName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Customer> cq = cb.createQuery(Customer.class);
         Root<Customer> customerRoot = cq.from(Customer.class);
+        Predicate where = cb.and(cb.equal(customerRoot.get(Customer_.FIRST_NAME), firstName), cb.equal(customerRoot.get(Customer_.LAST_NAME), lastName));
         CriteriaQuery<Customer> customerCriteriaQuery = cq
                 .select(customerRoot)
-                .where(cb.equal(customerRoot.get(Customer_.LAST_NAME), lastName));
+                .where(where);
         return em.createQuery(customerCriteriaQuery).getSingleResult();
     }
 

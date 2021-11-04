@@ -22,7 +22,7 @@ class Application {
         logger.atInfo().log("-------------- Criteria API --------------");
         // use criteria API
         CriteriaApiExample api = new CriteriaApiExample(em);
-        Customer apiByName = api.findByName("Stuart");
+        Customer apiByName = api.findByName("Patrick", "Stuart");
         logger.atInfo().log("Found customer via criteria API: {}", apiByName);
 
         PurchaseOrder apiOrderOfCustomer = api.findOrderOfCustomer("Stuart");
@@ -31,7 +31,7 @@ class Application {
         logger.atInfo().log("--------------- JOOQ ---------------");
         // use jooq
         JOOQExample jooq = new JOOQExample(em);
-        Customer jooqByName = jooq.findByName("Stuart");
+        Customer jooqByName = jooq.findByName("Patrick", "Stuart");
         logger.atInfo().log("Found customer via jooq: {}", jooqByName);
 
         PurchaseOrder jooqOrderOfCustomer = jooq.findOrderOfCustomer("Stuart");
@@ -40,7 +40,7 @@ class Application {
 
         logger.atInfo().log("--------------- JPA Streamer ---------------");
         JPAStreamerExample streamer = new JPAStreamerExample(jpaStreamer);
-        Customer jpaByName = streamer.findByName("Stuart");
+        Customer jpaByName = streamer.findByName("Patrick", "Stuart");
         logger.atInfo().log("Found customer via jpa streamer: {}", jpaByName);
 
         PurchaseOrder jpaOrderOfCustomer = jooq.findOrderOfCustomer("Stuart");
@@ -48,7 +48,7 @@ class Application {
 
         logger.atInfo().log("--------------- QueryDSL ---------------");
         QueryDSLExample dsl = new QueryDSLExample(em);
-        Customer dslByName = dsl.findByName("Stuart");
+        Customer dslByName = dsl.findByName("Patrick", "Stuart");
         logger.atInfo().log("Found customer via QueryDSL: {}", dslByName);
 
         PurchaseOrder dslOrderOfCustomer = jooq.findOrderOfCustomer("Stuart");

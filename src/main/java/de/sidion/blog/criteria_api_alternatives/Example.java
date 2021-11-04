@@ -5,7 +5,7 @@ import de.sidion.blog.criteria_api_alternatives.model.PurchaseOrder;
 
 public interface Example {
 
-    Customer findByName(String lastName);
+    Customer findByName(String firstName, String lastName);
 
     PurchaseOrder findOrderOfCustomer(String lastName);
 }

@@ -36,4 +36,8 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 '}';
     }
+
+    public String getLastName() {
+        return lastName;
+    }
 }
