@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="1" author="nicolai.mainiero">
+        <createTable tableName="customer">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar"/>
+            <column name="last_name" type="varchar"/>
+            <column name="city" type="varchar"/>
+            <column name="country" type="varchar"/>
+            <column name="phone" type="varchar"/>
+        </createTable>
+        <createTable tableName="supplier">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar"/>
+            <column name="contact_name" type="varchar"/>
+            <column name="city" type="varchar"/>
+            <column name="country" type="varchar"/>
+            <column name="phone" type="varchar"/>
+            <column name="fax" type="varchar"/>
+        </createTable>
+        <createTable tableName="purchase_order">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="order_date" type="date"/>
+            <column name="customer_id" type="bigint">
+                <constraints foreignKeyName="fk_customer_id" referencedTableName="customer" referencedColumnNames="id"/>
+            </column>
+            <column name="total_amount" type="currency"/>
+        </createTable>
+        <createTable tableName="product">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="product_name" type="varchar"/>
+            <column name="supplier_id" type="bigint">
+                <constraints foreignKeyName="fk_supplier_id" referencedTableName="supplier" referencedColumnNames="id"/>
+            </column>
+            <column name="unit_price" type="currency"/>
+            <column name="packaging" type="varchar"/>
+            <column name="is_discontinued" type="bool"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="nicolai.mainiero">
+        <createTable tableName="purchase_order_item">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="order_id" type="bigint">
+                <constraints foreignKeyName="fk_order_id" referencedTableName="purchase_order" referencedColumnNames="id"/>
+            </column>
+            <column name="product_id" type="bigint">
+                <constraints foreignKeyName="fk_product_id" referencedTableName="product" referencedColumnNames="id"/>
+            </column>
+            <column name="unit_price" type="currency"/>
+            <column name="quantity" type="int"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="nicolai.mainiero">
+        <insert tableName="customer">
+            <column name="id" value="1"/>
+            <column name="first_name" value="Patrick"/>
+            <column name="last_name" value="Stuart"/>
+            <column name="city" value="Mirfield"/>
+            <column name="country" value="England"/>
+            <column name="phone" value="555-12345"/>
+        </insert>
+        <insert tableName="purchase_order">
+            <column name="id" value="1"/>
+            <column name="order_date" value="2021-10-31"/>
+            <column name="customer_id" value="1"/>
+            <column name="total_amount" value="1701.86"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
